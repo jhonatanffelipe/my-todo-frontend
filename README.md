@@ -1,1 +1,1 @@
-# -skip-blocks-game
+# skip-blocks-game
