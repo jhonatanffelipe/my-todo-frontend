@@ -1,10 +1,55 @@
-var context = "";
+let context = "";
 let screenHeight = 0;
 let screenWidth = 0;
 let frames = 0;
+let maxJump = 3;
+
+let floor = {
+  y: 550,
+  height: 50,
+  color: "#ffdf70",
+  render: function () {
+    context.fillStyle = this.color;
+    context.fillRect(0, this.y, screenWidth, this.height);
+  },
+};
+
+let block = {
+  x: 50,
+  y: 0,
+  height: 50,
+  width: 50,
+  color: "#ff4e4e",
+  gravity: 1.6,
+  velocity: 0,
+  jumpForce: 26.6,
+  numberJumps: 0,
+
+  update: function () {
+    this.velocity += this.gravity;
+    this.y += this.velocity;
+
+    if (this.y > floor.y - this.height) {
+      this.y = floor.y - this.height;
+    }
+  },
+
+  jump: function () {
+    if (this.numberJumps < maxJump) {
+      this.numberJumps++;
+      this.velocity = -this.jumpForce;
+      this.numberJumps = 0;
+    }
+  },
+
+  render: function () {
+    context.fillStyle = this.color;
+    context.fillRect(this.x, this.y, this.width, this.height);
+  },
+};
 
 function click(event) {
-  window.alert("Olá");
+  block.jump();
 }
 
 function start() {
@@ -37,11 +82,16 @@ function loop() {
 
 function update() {
   frames++;
+
+  block.update();
 }
 
 function render() {
   context.fillStyle = "#50beff";
   context.fillRect(0, 0, screenWidth, screenHeight);
+
+  floor.render();
+  block.render();
 }
 
 start();
