@@ -1,6 +1,6 @@
 let context = "";
-let screenHeight = 0;
-let screenWidth = 0;
+let HEIGHT = 0;
+let WIDTH = 0;
 let frames = 0;
 let maxJump = 3;
 
@@ -10,7 +10,7 @@ let floor = {
   color: "#ffdf70",
   render: function () {
     context.fillStyle = this.color;
-    context.fillRect(0, this.y, screenWidth, this.height);
+    context.fillRect(0, this.y, WIDTH, this.height);
   },
 };
 
@@ -48,23 +48,47 @@ let block = {
   },
 };
 
+let obstacles = {
+  _obs: [],
+  colors: ["#0023F5", "#EB3324", "#FFF200", "#A349A4", "#22B14C", "#FF7F27"],
+
+  insert: function () {
+    this._obs.push({
+      x: 200,
+      width: 30 + Math.floor(Math.random() * 21),
+      height: 30 + Math.floor(Math.random() * 120),
+      color: this.colors[Math.floor(Math.random() * 6)],
+    });
+  },
+
+  update: function () {},
+
+  render: function () {
+    for (let i = 0, size = this._obs.length; i < size; i++) {
+      let obs = this._obs[i];
+      context.fillStyle = obs.color;
+      context.fillRect(obs.x, floor.y - obs.height, obs.width, obs.height);
+    }
+  },
+};
+
 function click(event) {
   block.jump();
 }
 
 function start() {
-  screenHeight = window.innerHeight;
-  screenWidth = window.innerWidth;
+  HEIGHT = window.innerHeight;
+  WIDTH = window.innerWidth;
 
-  if (screenWidth >= 600) {
-    screenWidth = 600;
-    screenHeight = 600;
+  if (WIDTH >= 600) {
+    WIDTH = 600;
+    HEIGHT = 600;
   }
 
   let canvas = document.createElement("canvas");
 
-  canvas.width = screenWidth;
-  canvas.height = screenHeight;
+  canvas.width = WIDTH;
+  canvas.height = HEIGHT;
 
   context = canvas.getContext("2d");
   document.body.appendChild(canvas);
@@ -88,9 +112,10 @@ function update() {
 
 function render() {
   context.fillStyle = "#50beff";
-  context.fillRect(0, 0, screenWidth, screenHeight);
+  context.fillRect(0, 0, WIDTH, HEIGHT);
 
   floor.render();
+  obstacles.render();
   block.render();
 }
 
