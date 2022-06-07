@@ -3,6 +3,7 @@ let HEIGHT = 0;
 let WIDTH = 0;
 let frames = 0;
 let maxJump = 3;
+let velocity = 6;
 
 let floor = {
   y: 550,
@@ -51,17 +52,38 @@ let block = {
 let obstacles = {
   _obs: [],
   colors: ["#0023F5", "#EB3324", "#FFF200", "#A349A4", "#22B14C", "#FF7F27"],
+  insertTime: 0,
 
   insert: function () {
     this._obs.push({
-      x: 200,
+      x: WIDTH,
       width: 30 + Math.floor(Math.random() * 21),
       height: 30 + Math.floor(Math.random() * 120),
       color: this.colors[Math.floor(Math.random() * 6)],
     });
+
+    this.insertTime = 40 + Math.floor(Math.random() * 60);
   },
 
-  update: function () {},
+  update: function () {
+    if (this.insertTime == 0) {
+      this.insert();
+    } else {
+      this.insertTime--;
+    }
+
+    for (let i = 0, size = this._obs.length; i < size; i++) {
+      let obs = this._obs[i];
+
+      obs.x -= velocity;
+
+      if (obs.x <= -obs.width) {
+        this._obs.splice(i, 1);
+        size--;
+        i--;
+      }
+    }
+  },
 
   render: function () {
     for (let i = 0, size = this._obs.length; i < size; i++) {
@@ -108,6 +130,7 @@ function update() {
   frames++;
 
   block.update();
+  obstacles.update();
 }
 
 function render() {
