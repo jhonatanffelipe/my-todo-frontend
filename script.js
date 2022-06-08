@@ -3,9 +3,16 @@ let HEIGHT = 0;
 let WIDTH = 0;
 let frames = 0;
 let maxJump = 3;
-let velocity = 6;
+let velocity = 5;
+let currentStatus = 0;
 
-let floor = {
+typeStatus = {
+  play: 0,
+  playing: 1,
+  lost: 2,
+};
+
+floor = {
   y: 550,
   height: 50,
   color: "#ffdf70",
@@ -15,13 +22,13 @@ let floor = {
   },
 };
 
-let block = {
+block = {
   x: 50,
   y: 0,
   height: 50,
   width: 50,
   color: "#ff4e4e",
-  gravity: 1.6,
+  gravity: 1.4,
   velocity: 0,
   jumpForce: 26.6,
   numberJumps: 0,
@@ -30,8 +37,10 @@ let block = {
     this.velocity += this.gravity;
     this.y += this.velocity;
 
-    if (this.y > floor.y - this.height) {
+    if (this.y > floor.y - this.height && currentStatus != typeStatus.lost) {
       this.y = floor.y - this.height;
+      this.velocity = 0;
+      this.numberJumps = 0;
     }
   },
 
@@ -39,7 +48,6 @@ let block = {
     if (this.numberJumps < maxJump) {
       this.numberJumps++;
       this.velocity = -this.jumpForce;
-      this.numberJumps = 0;
     }
   },
 
@@ -49,7 +57,7 @@ let block = {
   },
 };
 
-let obstacles = {
+obstacles = {
   _obs: [],
   colors: ["#0023F5", "#EB3324", "#FFF200", "#A349A4", "#22B14C", "#FF7F27"],
   insertTime: 0,
@@ -57,8 +65,8 @@ let obstacles = {
   insert: function () {
     this._obs.push({
       x: WIDTH,
-      width: 30 + Math.floor(Math.random() * 21),
-      height: 30 + Math.floor(Math.random() * 120),
+      width: 40 + Math.floor(Math.random() * 21),
+      height: 30 + Math.floor(Math.random() * 100),
       color: this.colors[Math.floor(Math.random() * 6)],
     });
 
@@ -77,12 +85,22 @@ let obstacles = {
 
       obs.x -= velocity;
 
-      if (obs.x <= -obs.width) {
+      if (
+        block.x < obs.x + obs.width &&
+        block.x + block.width >= obs.x &&
+        block.y + block.height >= floor.y - obs.height
+      ) {
+        currentStatus = typeStatus.lost;
+      } else if (obs.x <= -obs.width) {
         this._obs.splice(i, 1);
         size--;
         i--;
       }
     }
+  },
+
+  clear: function () {
+    this._obs = [];
   },
 
   render: function () {
@@ -95,7 +113,15 @@ let obstacles = {
 };
 
 function click(event) {
-  block.jump();
+  if (currentStatus === typeStatus.playing) {
+    block.jump();
+  } else if (currentStatus === typeStatus.play) {
+    currentStatus = typeStatus.playing;
+  } else if (currentStatus === typeStatus.lost && block.y >= HEIGHT * 1.5) {
+    currentStatus = typeStatus.play;
+    block.velocity = 0;
+    block.y = 0;
+  }
 }
 
 function start() {
@@ -116,6 +142,8 @@ function start() {
   document.body.appendChild(canvas);
   document.addEventListener("mousedown", click);
 
+  currentStatus = typeStatus.play;
+
   loop();
 }
 
@@ -130,15 +158,28 @@ function update() {
   frames++;
 
   block.update();
-  obstacles.update();
+  if (currentStatus === typeStatus.playing) {
+    obstacles.update();
+  } else if (currentStatus === typeStatus.play) {
+    obstacles.clear();
+  }
 }
 
 function render() {
   context.fillStyle = "#50beff";
   context.fillRect(0, 0, WIDTH, HEIGHT);
 
+  if (currentStatus === typeStatus.play) {
+    context.fillStyle = "green";
+    context.fillRect(WIDTH / 2 - 50, HEIGHT / 2 - 50, 100, 100);
+  } else if (currentStatus === typeStatus.lost) {
+    context.fillStyle = "red";
+    context.fillRect(WIDTH / 2 - 50, HEIGHT / 2 - 50, 100, 100);
+  } else if (currentStatus === typeStatus.playing) {
+    obstacles.render();
+  }
+
   floor.render();
-  obstacles.render();
   block.render();
 }
 
