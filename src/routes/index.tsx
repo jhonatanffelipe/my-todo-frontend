@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from "react-router-dom";
 
-import SignIn from '../pages/SignIn';
-import SignUp from '../pages/SignUp';
+import SignIn from "../pages/SignIn";
+import SignUp from "../pages/SignUp";
 
 const AppRoutes: React.FC = () => {
   return (
