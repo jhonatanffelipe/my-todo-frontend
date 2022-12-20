@@ -39,33 +39,6 @@ export const Content = styled.div`
     margin-bottom: 34px;
   }
 
-  input {
-    background: #fff;
-    border-radius: 10px;
-    border: 2px solid;
-    padding: 16px;
-    width: 100%;
-
-    & + input {
-      margin-top: 8px;
-    }
-  }
-
-  button {
-    background: #6c5dd2;
-    border-radius: 10px;
-    margin-top: 34px;
-    padding: 16px;
-    width: 100%;
-    color: #fff;
-    font-weight: 500;
-
-    &:hover {
-      background: #5e51b6;
-      transition: background-color 0.2s;
-    }
-  }
-
   > a {
     display: flex;
     align-items: center;
