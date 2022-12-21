@@ -1,4 +1,4 @@
-import React, { ComponentType, InputHTMLAttributes } from "react";
+import React, { ComponentType, InputHTMLAttributes, forwardRef } from "react";
 import { IconBaseProps } from "react-icons";
 import { Container } from "./styles";
 
