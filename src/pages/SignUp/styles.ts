@@ -2,25 +2,25 @@ import styled, { keyframes } from "styled-components";
 
 export const Container = styled.div`
   height: 100vh;
-
   display: flex;
   align-items: stretch;
 `;
 
 export const Content = styled.div`
-  width: 100%;
-  max-width: 800px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  width: 100%;
+  max-width: 800px;
 
   @media (max-width: 1100px) {
     max-width: 100vw;
   }
 `;
 
-const appearFromLeft = keyframes`
+const appearFromRight = keyframes`
   from {
     opacity: 0;
     transform: translateX(-50px);
@@ -43,7 +43,7 @@ export const AnimationContainer = styled.div`
 
   padding: 25px;
 
-  animation: ${appearFromLeft} 1s;
+  animation: ${appearFromRight} 1s;
 
   form {
     margin: 80px 0 40px;
