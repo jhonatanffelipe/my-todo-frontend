@@ -31,7 +31,7 @@ const ResetPassword: React.FC = () => {
 
             <Input name="confirmPassword" icon={FiUnlock} type="password" placeholder="Confirmar enha" error="" />
 
-            <Button type="button" loading={loading} onClick={handleSubmit}>
+            <Button type="button" loading={loading} onClick={handleSubmit} size={340}>
               Confirmar
             </Button>
           </form>

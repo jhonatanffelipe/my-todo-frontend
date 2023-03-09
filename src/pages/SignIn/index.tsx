@@ -94,7 +94,7 @@ const SignIn: React.FC = () => {
               autoComplete="current-password"
             />
 
-            <Button type="button" onClick={handleSubmit} loading={loading}>
+            <Button type="button" onClick={handleSubmit} loading={loading} size={340}>
               Entrar
             </Button>
 

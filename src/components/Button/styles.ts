@@ -22,6 +22,7 @@ export const Container = styled.button<IContanerProps>`
     background: ${shade(0.2, "#6c5dd2")};
   }
   width: 300px;
+  height: 55px;
 
   ${props =>
     props.size &&

@@ -29,7 +29,7 @@ const ForgotPassword: React.FC = () => {
 
             <Input name="email" icon={FiMail} placeholder="E-mail" error="" />
 
-            <Button type="button" loading={loading} onClick={handleSubmit}>
+            <Button type="button" loading={loading} onClick={handleSubmit} size={340}>
               Confirmar
             </Button>
           </form>
