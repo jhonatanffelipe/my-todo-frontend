@@ -1,17 +1,42 @@
-import styled from "styled-components";
+import { shade } from "polished";
+import styled, { css } from "styled-components";
 
-export const Container = styled.button`
+interface IContanerProps {
+  disabled: boolean;
+  size?: number;
+}
+
+export const Container = styled.button<IContanerProps>`
   background: #6c5dd2;
   border-radius: 10px;
-  margin-top: 34px;
+  border: 0;
   padding: 16px;
-  width: 100%;
   color: #fff;
-  font-weight: 500;
-  border: none;
+  font-weight: bold;
+
+  margin-top: 16px;
+
+  transition: background-color 0.2s;
 
   &:hover {
-    background: #5e51b6;
-    transition: background-color 0.2s;
+    background: ${shade(0.2, "#6c5dd2")};
   }
+  width: 300px;
+
+  ${props =>
+    props.size &&
+    props.size > 0 &&
+    css`
+      width: ${props.size}px;
+    `}
+
+  ${props =>
+    props.disabled &&
+    css`
+      background-color: #5d5d5d;
+
+      &:hover {
+        background: ${shade(0.2, "#5D5D5D")};
+      }
+    `}
 `;

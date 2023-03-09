@@ -12,4 +12,4 @@ const AppProviders: React.FC<IAppProvider> = ({ children }) => {
   );
 };
 
-export default AppProviders;
+export { AppProviders };

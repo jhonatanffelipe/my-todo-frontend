@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiArrowLeft, FiMail } from "react-icons/fi";
 import { Background, BackgroundImg, Container, Content, LogoImg, AnimationContainer } from "./styles";
 
@@ -9,6 +9,11 @@ import { Input } from "../../components/Input";
 import { Link } from "react-router-dom";
 
 const ForgotPassword: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = () => {
+    setLoading(false);
+  };
   return (
     <Container>
       <Background>
@@ -24,7 +29,9 @@ const ForgotPassword: React.FC = () => {
 
             <Input name="email" icon={FiMail} placeholder="E-mail" error="" />
 
-            <Button type="submit">Confirmar</Button>
+            <Button type="button" loading={loading} onClick={handleSubmit}>
+              Confirmar
+            </Button>
           </form>
 
           <Link to="/">

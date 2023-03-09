@@ -23,12 +23,15 @@ const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 const AuthProvider: React.FC<IAuthProvider> = ({ children }) => {
   const [authData, setAuthData] = useState<IAuthState>(() => {
-    const token: IAuthToken = JSON.parse(localStorage.getItem("@MyTodo:token") || "");
-    const user: IAuthUser = JSON.parse(localStorage.getItem("@MyTodo:user") || "");
+    const token = localStorage.getItem("@MyTodo:token");
+    const user = localStorage.getItem("@MyTodo:user");
 
     if (token && user) {
-      api.defaults.headers.authorization = `Bearer ${token.accessToken}`;
-      return { token, user };
+      const tokenPased: IAuthToken = JSON.parse(token);
+      const userPased: IAuthUser = JSON.parse(user);
+
+      api.defaults.headers.authorization = `Bearer ${tokenPased.accessToken}`;
+      return { token: tokenPased, user: userPased };
     }
 
     return {} as IAuthState;

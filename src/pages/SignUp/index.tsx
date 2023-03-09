@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiUser, FiArrowLeft, FiMail, FiLock, FiUnlock } from "react-icons/fi";
 import { Background, BackgroundImg, Container, Content, LogoImg, AnimationContainer } from "./styles";
 
@@ -9,6 +9,11 @@ import { Input } from "../../components/Input";
 import { Link } from "react-router-dom";
 
 const SignUp: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = () => {
+    setLoading(false);
+  };
   return (
     <Container>
       <Background>
@@ -30,7 +35,9 @@ const SignUp: React.FC = () => {
 
             <Input name="confirmPassword" icon={FiUnlock} type="password" placeholder="Confirmar enha" error="" />
 
-            <Button type="submit">Confirmar</Button>
+            <Button type="button" loading={loading} onClick={handleSubmit}>
+              Confirmar
+            </Button>
           </form>
 
           <Link to="/">
