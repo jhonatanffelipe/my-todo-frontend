@@ -20,8 +20,32 @@ interface ISignInCredentials {
   password: string;
 }
 
+interface IAuthToken {
+  accessToken: string;
+  refreshToken: string;
+  iat: number;
+  exp: number;
+}
+
+interface IAuthUser {
+  id: string;
+  name: string;
+  avatar_url: string;
+  email: string;
+}
+
 interface IAuthState {
-  token: string;
+  token: IAuthToken;
+  user: IAuthUser;
+}
+
+interface IAuthState {
+  token: {
+    accessToken: string;
+    refreshToken: string;
+    iat: number;
+    exp: number;
+  };
   user: {
     id: string;
     name: string;
@@ -34,12 +58,12 @@ const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 const AuthProvider: React.FC<IAuthProvider> = ({ children }) => {
   const [authData, setAuthData] = useState<IAuthState>(() => {
-    const token = localStorage.getItem("@MyTodo:token");
-    const user = localStorage.getItem("@MyTodo:user");
+    const token: IAuthToken = JSON.parse(localStorage.getItem("@MyTodo:token") || "");
+    const user: IAuthUser = JSON.parse(localStorage.getItem("@MyTodo:user") || "");
 
     if (token && user) {
-      api.defaults.headers.authorization = `Bearer ${token}`;
-      return { token, user: JSON.parse(user) };
+      api.defaults.headers.authorization = `Bearer ${token.accessToken}`;
+      return { token, user };
     }
 
     return {} as IAuthState;
@@ -53,10 +77,10 @@ const AuthProvider: React.FC<IAuthProvider> = ({ children }) => {
 
     const { token, user }: IAuthState = response.data;
 
-    localStorage.setItem("@MyTodo:token", token);
+    localStorage.setItem("@MyTodo:token", JSON.stringify(token));
     localStorage.setItem("@MyTodo:user", JSON.stringify(user));
 
-    api.defaults.headers.authorization = `Bearer ${token}`;
+    api.defaults.headers.authorization = `Bearer ${token.accessToken}`;
 
     setAuthData({ token, user });
   }, []);
