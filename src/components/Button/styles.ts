@@ -8,6 +8,7 @@ export const Container = styled.button`
   width: 100%;
   color: #fff;
   font-weight: 500;
+  border: none;
 
   &:hover {
     background: #5e51b6;

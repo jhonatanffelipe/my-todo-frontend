@@ -1,5 +1,5 @@
 import React from "react";
-import { FiUser, FiArrowLeft, FiMail, FiLock, FiUnlock } from "react-icons/fi";
+import { FiArrowLeft, FiMail } from "react-icons/fi";
 import { Background, BackgroundImg, Container, Content, LogoImg, AnimationContainer } from "./styles";
 
 import logoImg from "../../assets/logo-purple.svg";
@@ -8,7 +8,7 @@ import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Link } from "react-router-dom";
 
-const SignUp: React.FC = () => {
+const ForgotPassword: React.FC = () => {
   return (
     <Container>
       <Background>
@@ -20,15 +20,9 @@ const SignUp: React.FC = () => {
           <LogoImg src={logoImg} alt="" />
 
           <form action="">
-            <h1>Crie sua conta</h1>
-
-            <Input name="name" icon={FiUser} placeholder="Nome" error="" />
+            <h1>Recuperar senha</h1>
 
             <Input name="email" icon={FiMail} placeholder="E-mail" error="" />
-
-            <Input name="password" icon={FiLock} type="password" placeholder="Senha" error="" />
-
-            <Input name="confirmPassword" icon={FiUnlock} type="password" placeholder="Confirmar enha" error="" />
 
             <Button type="submit">Confirmar</Button>
           </form>
@@ -43,4 +37,4 @@ const SignUp: React.FC = () => {
   );
 };
 
-export { SignUp };
+export { ForgotPassword };

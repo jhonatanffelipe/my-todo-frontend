@@ -46,7 +46,7 @@ export const AnimationContainer = styled.div`
   animation: ${appearFromLeft} 1s;
 
   form {
-    margin: 80px 0 40px;
+    margin: 56px 0 40px;
     width: 340px;
     text-align: center;
 
@@ -102,7 +102,7 @@ export const Background = styled.div`
 `;
 
 export const LogoImg = styled.img`
-  width: 340px;
+  width: 300px;
 `;
 
 export const BackgroundImg = styled.img`

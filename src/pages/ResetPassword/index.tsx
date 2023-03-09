@@ -1,5 +1,5 @@
 import React from "react";
-import { FiUser, FiArrowLeft, FiMail, FiLock, FiUnlock } from "react-icons/fi";
+import { FiArrowLeft, FiLock, FiUnlock } from "react-icons/fi";
 import { Background, BackgroundImg, Container, Content, LogoImg, AnimationContainer } from "./styles";
 
 import logoImg from "../../assets/logo-purple.svg";
@@ -8,7 +8,7 @@ import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Link } from "react-router-dom";
 
-const SignUp: React.FC = () => {
+const ResetPassword: React.FC = () => {
   return (
     <Container>
       <Background>
@@ -20,11 +20,7 @@ const SignUp: React.FC = () => {
           <LogoImg src={logoImg} alt="" />
 
           <form action="">
-            <h1>Crie sua conta</h1>
-
-            <Input name="name" icon={FiUser} placeholder="Nome" error="" />
-
-            <Input name="email" icon={FiMail} placeholder="E-mail" error="" />
+            <h1>Alterar senha</h1>
 
             <Input name="password" icon={FiLock} type="password" placeholder="Senha" error="" />
 
@@ -35,7 +31,7 @@ const SignUp: React.FC = () => {
 
           <Link to="/">
             <FiArrowLeft />
-            Voltar
+            Voltar para tela de login
           </Link>
         </AnimationContainer>
       </Content>
@@ -43,4 +39,4 @@ const SignUp: React.FC = () => {
   );
 };
 
-export { SignUp };
+export { ResetPassword };
