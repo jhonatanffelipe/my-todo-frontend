@@ -1,4 +1,8 @@
 import React, { createContext, HTMLAttributes, useCallback, useContext, useState } from "react";
+import { IAuthState } from "../interfaces/IAthState";
+import { IAuthToken } from "../interfaces/IAuthToken";
+import { IAuthUser } from "../interfaces/IAuthUser";
+import { ISignInCredentials } from "../interfaces/ISignInCredentials";
 
 import api from "../services/api";
 
@@ -13,45 +17,6 @@ interface IAuthContext {
   };
   signIn: (credentials: ISignInCredentials) => Promise<void>;
   singOut: () => void;
-}
-
-interface ISignInCredentials {
-  email: string;
-  password: string;
-}
-
-interface IAuthToken {
-  accessToken: string;
-  refreshToken: string;
-  iat: number;
-  exp: number;
-}
-
-interface IAuthUser {
-  id: string;
-  name: string;
-  avatar_url: string;
-  email: string;
-}
-
-interface IAuthState {
-  token: IAuthToken;
-  user: IAuthUser;
-}
-
-interface IAuthState {
-  token: {
-    accessToken: string;
-    refreshToken: string;
-    iat: number;
-    exp: number;
-  };
-  user: {
-    id: string;
-    name: string;
-    avatar_url: string;
-    email: string;
-  };
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);

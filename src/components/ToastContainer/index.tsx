@@ -1,9 +1,7 @@
 import React from "react";
 
 import { Container } from "./styles";
-
-import { IToastMessage } from "../../hooks/toast";
-
+import { IToastMessage } from "../../interfaces/IToastMessage";
 import { Toast } from "./Toast";
 
 interface IToastContainerProps {

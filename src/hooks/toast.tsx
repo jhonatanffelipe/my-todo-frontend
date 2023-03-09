@@ -1,19 +1,13 @@
 import React, { createContext, HTMLAttributes, useCallback, useContext, useState } from "react";
 import { ToastContainer } from "../components/ToastContainer";
 import { v4 as uuidv4 } from "uuid";
+import { IToastMessage } from "../interfaces/IToastMessage";
 
 interface IToasProvider extends HTMLAttributes<HTMLElement> {}
 
 interface IToastContextData {
   addToast: (message: Omit<IToastMessage, "id">) => void;
   removeToast: (id: string) => void;
-}
-
-export interface IToastMessage {
-  type?: "error" | "success" | "info";
-  title: string;
-  description?: string;
-  id: string;
 }
 
 const ToastContext = createContext<IToastContextData>({} as IToastContextData);
