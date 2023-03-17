@@ -33,7 +33,7 @@ const SignUp: React.FC = () => {
 
             <Input name="password" icon={FiLock} type="password" placeholder="Senha" error="" />
 
-            <Input name="confirmPassword" icon={FiUnlock} type="password" placeholder="Confirmar enha" error="" />
+            <Input name="confirmPassword" icon={FiUnlock} type="password" placeholder="Confirmar senha" error="" />
 
             <Button type="button" loading={loading} onClick={handleSubmit} size={340}>
               Confirmar

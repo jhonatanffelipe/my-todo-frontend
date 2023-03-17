@@ -8,7 +8,7 @@ const Dashboard: React.FC = () => {
   return (
     <Container>
       <h1>Dashboard</h1>
-      <Button type="button" onClick={singOut}>
+      <Button type="button" loading={false} onClick={singOut}>
         Sair
       </Button>
     </Container>
