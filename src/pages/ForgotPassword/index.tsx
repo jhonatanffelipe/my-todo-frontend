@@ -22,7 +22,6 @@ const ForgotPassword: React.FC = () => {
 
   const handleSubmit = useCallback(async () => {
     setLoading(true);
-
     setFormErros({});
 
     try {
