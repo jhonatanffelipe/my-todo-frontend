@@ -53,8 +53,8 @@ const ForgotPassword: React.FC = () => {
 
       addToast({
         type: "error",
-        title: "Erro na autenticação",
-        description: "Ocorreu um erro ao requisitar recuperação de senha",
+        title: "Ocorreu um erro ao requisitar recuperação de senha",
+        description: err.message,
       });
     } finally {
       setLoading(false);
