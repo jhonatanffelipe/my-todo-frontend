@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from "react";
 
-import { Container, Content, Menu, MenuItem, Power, Profile } from "./styles";
+import {
+  Container,
+  ContentDesktop,
+  ContentMobile,
+  ContentMobileHeader,
+  MenuDesktop,
+  MenuItemDesktop,
+  MenuItemMobile,
+  MenuMobile,
+  PowerDesktop,
+  PowerMobile,
+  ProfileDesktop,
+} from "./styles";
 import logoImg from "../../assets/logo-purple.svg";
-import { FiPower } from "react-icons/fi";
+import { FiAlignJustify, FiPower } from "react-icons/fi";
 import { useAuth } from "../../hooks/auth";
 import { useLocation } from "react-router-dom";
 
 const Header: React.FC = () => {
   const [pathName, setPathName] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
   const { user, singOut } = useAuth();
 
   const location = useLocation();
@@ -19,35 +32,57 @@ const Header: React.FC = () => {
   return (
     <>
       {user && (
-        <Container>
-          <Content>
+        <Container menuOpen={menuOpen}>
+          <ContentDesktop>
             <img src={logoImg} alt="My Todo" />
 
-            <Profile>
+            <ProfileDesktop>
               <img src="https://avatars.githubusercontent.com/u/54486596?v=4" alt="Jhonatan Nascimento" />
 
               <div>
                 <p>Bem vindo,</p>
                 <strong>Jhonatan Nascimento</strong>
               </div>
-            </Profile>
+            </ProfileDesktop>
 
-            <Menu>
-              <MenuItem to={"/"} selected={pathName === "/dashboard"}>
+            <MenuDesktop>
+              <MenuItemDesktop to={"/"} selected={pathName === "/dashboard"}>
                 Inicio
-              </MenuItem>
-              <MenuItem to={"/task"} selected={pathName === "/task"}>
+              </MenuItemDesktop>
+              <MenuItemDesktop to={"/task"} selected={pathName === "/task"}>
                 Nova Tarefa
-              </MenuItem>
-              <MenuItem to={"/profile"} selected={pathName === "/profile"}>
+              </MenuItemDesktop>
+              <MenuItemDesktop to={"/profile"} selected={pathName === "/profile"}>
                 Meu Perfil
-              </MenuItem>
-            </Menu>
+              </MenuItemDesktop>
+            </MenuDesktop>
 
-            <Power>
+            <PowerDesktop>
               <FiPower size={20} onClick={singOut} />
-            </Power>
-          </Content>
+            </PowerDesktop>
+          </ContentDesktop>
+          <ContentMobile>
+            <ContentMobileHeader>
+              <FiAlignJustify size={30} onClick={() => setMenuOpen(!menuOpen)} />
+              <img src={logoImg} alt="My Todo" />
+              <PowerMobile>
+                <FiPower size={20} onClick={singOut} />
+              </PowerMobile>
+            </ContentMobileHeader>
+            {menuOpen && (
+              <MenuMobile>
+                <MenuItemMobile to={"/"} selected={pathName === "/dashboard"}>
+                  Inicio
+                </MenuItemMobile>
+                <MenuItemMobile to={"/task"} selected={pathName === "/task"}>
+                  Nova Tarefa
+                </MenuItemMobile>
+                <MenuItemMobile to={"/profile"} selected={pathName === "/profile"}>
+                  Meu Perfil
+                </MenuItemMobile>
+              </MenuMobile>
+            )}
+          </ContentMobile>
         </Container>
       )}
     </>

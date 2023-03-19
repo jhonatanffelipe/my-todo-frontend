@@ -6,8 +6,11 @@ interface IMenuItensProps {
   selected: boolean;
 }
 
-export const Container = styled.header`
-  height: 80px;
+interface IContentMobileProps {
+  menuOpen: boolean;
+}
+
+export const Container = styled.header<IContentMobileProps>`
   border-bottom: 2px solid #6c5dd2;
   background: #1e2128;
 
@@ -15,9 +18,23 @@ export const Container = styled.header`
   align-items: center;
   justify-content: center;
   width: 100%;
+
+  @media (min-width: 800px) {
+    height: 80px;
+  }
+
+  ${props =>
+    props.menuOpen
+      ? css`
+          height: 200px;
+          align-items: flex-start;
+        `
+      : css`
+          height: 80px;
+        `}
 `;
 
-export const Content = styled.div`
+export const ContentDesktop = styled.div`
   height: 100%;
   width: 80%;
   display: flex;
@@ -25,11 +42,15 @@ export const Content = styled.div`
 
   > img {
     width: 150px;
-    margin-right: 70px;
+    margin-right: 25px;
+  }
+
+  @media (max-width: 800px) {
+    display: none;
   }
 `;
 
-export const Profile = styled.div`
+export const ProfileDesktop = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,14 +76,15 @@ export const Profile = styled.div`
   }
 `;
 
-export const Menu = styled.div`
+export const MenuDesktop = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
   flex: 1;
+  margin-right: 50px;
 `;
 
-export const MenuItem = styled(Link)<IMenuItensProps>`
+export const MenuItemDesktop = styled(Link)<IMenuItensProps>`
   margin-left: 8px;
   margin-right: 8px;
   font-size: 14px;
@@ -87,12 +109,88 @@ export const MenuItem = styled(Link)<IMenuItensProps>`
         `}
 `;
 
-export const Power = styled.div`
+export const PowerDesktop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   margin-left: 15px;
+  position: absolute;
+  right: 0;
+
+  svg {
+    cursor: pointer;
+
+    &:hover {
+      color: #6c5dd2;
+    }
+  }
+`;
+
+export const ContentMobile = styled.div`
+  height: 100%;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 800px) {
+    display: none;
+  }
+`;
+
+export const ContentMobileHeader = styled.div`
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  > img {
+    width: 120px;
+  }
+
+  > svg {
+    cursor: pointer;
+    color: #fff;
+
+    &:hover {
+      color: ${shade(0.2, "#6c5dd2")};
+    }
+  }
+`;
+
+export const MenuMobile = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const MenuItemMobile = styled(Link)<IMenuItensProps>`
+  margin-bottom: 16px;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+
+  ${props =>
+    props.selected
+      ? css`
+          color: #6c5dd2;
+
+          &:hover {
+            color: ${shade(0.2, "#6c5dd2")};
+          }
+        `
+      : css`
+          color: #fff;
+
+          &:hover {
+            color: ${shade(0.2, "#fff")};
+          }
+        `}
+`;
+
+export const PowerMobile = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
 
   svg {
     cursor: pointer;
