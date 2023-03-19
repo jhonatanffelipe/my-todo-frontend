@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
+import { Header } from "./components/Header";
 import { AppProviders } from "./hooks";
 
 import AppRoutes from "./routes";
@@ -10,6 +11,7 @@ const App: React.FC = () => {
     <BrowserRouter>
       <GlobalStyle />
       <AppProviders>
+        <Header />
         <AppRoutes />
       </AppProviders>
     </BrowserRouter>

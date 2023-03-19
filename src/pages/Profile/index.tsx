@@ -2,12 +2,12 @@ import React from "react";
 
 import { Container } from "./styles";
 
-const Dashboard: React.FC = () => {
+const Profile: React.FC = () => {
   return (
     <Container>
-      <h1>Dashboard</h1>
+      <h1>Profile</h1>
     </Container>
   );
 };
 
-export { Dashboard };
+export { Profile };

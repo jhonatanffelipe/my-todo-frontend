@@ -2,12 +2,12 @@ import React from "react";
 
 import { Container } from "./styles";
 
-const Dashboard: React.FC = () => {
+const Task: React.FC = () => {
   return (
     <Container>
-      <h1>Dashboard</h1>
+      <h1>Task</h1>
     </Container>
   );
 };
 
-export { Dashboard };
+export { Task };
