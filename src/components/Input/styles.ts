@@ -11,9 +11,9 @@ interface IContanerProps {
 export const Container = styled.div<IContanerProps>`
   display: flex;
   align-items: center;
-  background: #282b30;
+  background: #1e2128;
   border-radius: 10px;
-  border: 2px solid #282b30;
+  border: 2px solid #1e2128;
   padding: 16px;
   width: 100%;
   color: #666360;

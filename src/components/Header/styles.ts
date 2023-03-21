@@ -19,7 +19,7 @@ export const Container = styled.header<IContentMobileProps>`
   justify-content: center;
   width: 100%;
 
-  @media (min-width: 800px) {
+  @media (min-width: 850px) {
     height: 80px;
   }
 
@@ -42,10 +42,10 @@ export const ContentDesktop = styled.div`
 
   > img {
     width: 150px;
-    margin-right: 25px;
+    margin-right: 45px;
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 850px) {
     display: none;
   }
 `;
@@ -133,7 +133,7 @@ export const ContentMobile = styled.div`
   display: flex;
   flex-direction: column;
 
-  @media (min-width: 800px) {
+  @media (min-width: 850px) {
     display: none;
   }
 `;
