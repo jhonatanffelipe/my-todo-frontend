@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { IFormErrors } from "../../interfaces/IFormErrors";
 import getValidationError from "../../utils/getValidationErros";
 import { useToast } from "../../hooks/toast";
-import { forgotPassword } from "../../services/password/forgotPassword";
+import api from "../../services/api";
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -37,13 +37,21 @@ const ForgotPassword: React.FC = () => {
         abortEarly: false,
       });
 
-      await forgotPassword({ email }).then(() => {
-        addToast({
-          type: "success",
-          title: "Recuperação de senha enviada com sucesso",
-          description: "Verifique sua caixa de entrada",
+      await api
+        .post("password/forgot", { email })
+        .then(() => {
+          addToast({
+            type: "success",
+            title: "Recuperação de senha enviada com sucesso",
+            description: "Verifique sua caixa de entrada",
+          });
+        })
+        .catch(() => {
+          addToast({
+            type: "error",
+            title: "Erro ao requisitar recuperação de senha.",
+          });
         });
-      });
     } catch (err: Yup.ValidationError | any) {
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationError(err);
@@ -53,8 +61,7 @@ const ForgotPassword: React.FC = () => {
 
       addToast({
         type: "error",
-        title: "Ocorreu um erro ao requisitar recuperação de senha",
-        description: err.message,
+        title: "Erro ao requisitar recuperação de senha.",
       });
     } finally {
       setLoading(false);
