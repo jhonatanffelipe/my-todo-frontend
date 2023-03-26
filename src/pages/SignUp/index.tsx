@@ -11,7 +11,7 @@ import { Input } from "../../components/Input";
 import { IFormErrors } from "../../interfaces/IFormErrors";
 import getValidationError from "../../utils/getValidationErros";
 import { useToast } from "../../hooks/toast";
-import { createUser } from "../../services/user/createUser";
+import api from "../../services/api";
 
 const SignUp: React.FC = () => {
   const [name, setName] = useState("");
@@ -49,33 +49,30 @@ const SignUp: React.FC = () => {
         abortEarly: false,
       });
 
-      await createUser({
-        name,
-        email,
-        password,
-        confirmPassword,
-      }).then(() => {
-        addToast({
-          type: "success",
-          title: "Usuário criado com sucesso",
-          description: "Realize seu login",
+      await api
+        .post("/users", {
+          name,
+          email,
+          password,
+          confirmPassword,
+        })
+        .then(() => {
+          navigate("/");
         });
-
-        navigate("/");
-      });
     } catch (err: Yup.ValidationError | any) {
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationError(err);
         setFormErrors(errors);
         return;
       }
+
       addToast({
         type: "error",
-        title: "Erro na tentar criar usuário",
+        title: "Erro na tentar alterar usuário",
         description: err.message,
       });
     } finally {
-      setLoading(false);
+      setLoading(true);
     }
   }, [addToast, name, email, password, confirmPassword, navigate]);
 
