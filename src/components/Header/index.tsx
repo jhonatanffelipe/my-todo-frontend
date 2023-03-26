@@ -37,11 +37,11 @@ const Header: React.FC = () => {
             <img src={logoImg} alt="My Todo" />
 
             <ProfileDesktop>
-              <img src="https://avatars.githubusercontent.com/u/54486596?v=4" alt="Jhonatan Nascimento" />
+              <img src={user.avatar_url} alt={user.name} />
 
               <div>
                 <p>Bem vindo,</p>
-                <strong>Jhonatan Nascimento</strong>
+                <strong>{user.name}</strong>
               </div>
             </ProfileDesktop>
 

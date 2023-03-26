@@ -9,6 +9,7 @@ import { Button } from "../../components/Button";
 import getValidationError from "../../utils/getValidationErros";
 import { useToast } from "../../hooks/toast";
 import { showProfile } from "../../services/user/showProfile";
+import { updateUser } from "../../services/user/updateUser";
 
 const Profile: React.FC = () => {
   const [name, setName] = useState("");
@@ -23,6 +24,17 @@ const Profile: React.FC = () => {
 
   const { addToast } = useToast();
 
+  const handleRequestShowProfile = useCallback(async () => {
+    await showProfile().then(reponse => {
+      setName(reponse.name);
+      setEmail(reponse.email);
+      setAvatar(reponse.avatar_url);
+
+      // localStorage.setItem("@MyTodo:user", JSON.stringify(reponse));
+      // setData({ token, user: profileUser });
+    });
+  }, []);
+
   const handleSubmit = useCallback(async () => {
     setLoading(true);
     setFormErrors({});
@@ -36,16 +48,34 @@ const Profile: React.FC = () => {
         confirmPassword,
       };
 
-      const schema = Yup.object().shape({
-        currentPassword: Yup.string().required("Senha atual obrigatória"),
-        password: Yup.string().required("Senha obrigatória"),
-        confirmPassword: Yup.string()
-          .required("Confirmação de senha obrigatória")
-          .oneOf([Yup.ref("password")], "Senhas devem ser iguais"),
-      });
+      let schema;
+
+      if (data.currentPassword ?? data.password ?? data.confirmPassword) {
+        schema = Yup.object().shape({
+          name: Yup.string().required("Nome obrigatório"),
+          email: Yup.string().required("E-mail obrigatório").email("Informe um e-mail válido"),
+          currentPassword: Yup.string().required("Senha atual obrigatória"),
+          password: Yup.string().min(6, "Deve conter no mínimo 6 dígito"),
+          confirmPassword: Yup.string().oneOf([Yup.ref("password")], "Senhas devem ser iguais"),
+        });
+      } else {
+        schema = Yup.object().shape({
+          name: Yup.string().required("Nome obrigatório"),
+          email: Yup.string().required("E-mail obrigatório").email("Informe um e-mail válido"),
+        });
+      }
 
       await schema.validate(data, {
         abortEarly: false,
+      });
+
+      await updateUser(data);
+
+      await handleRequestShowProfile();
+
+      addToast({
+        type: "success",
+        title: "Usuário atualizado com sucesso",
       });
     } catch (err: Yup.ValidationError | any) {
       if (err instanceof Yup.ValidationError) {
@@ -62,19 +92,11 @@ const Profile: React.FC = () => {
     } finally {
       setLoading(true);
     }
-  }, [name, email, currentPassword, password, confirmPassword, addToast]);
-
-  const handleLoadProfile = useCallback(async () => {
-    await showProfile().then(reponse => {
-      setName(reponse.name);
-      setEmail(reponse.email);
-      setAvatar(reponse.avatar);
-    });
-  }, []);
+  }, [name, email, currentPassword, password, confirmPassword, addToast, handleRequestShowProfile]);
 
   useEffect(() => {
-    void handleLoadProfile();
-  }, [handleLoadProfile]);
+    void handleRequestShowProfile();
+  }, [handleRequestShowProfile]);
 
   return (
     <Container>

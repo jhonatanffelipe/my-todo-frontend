@@ -8,7 +8,7 @@ const showProfile = async (): Promise<IProfile> => {
       const user: IProfile = {
         email: response.data.email,
         name: response.data.name,
-        avatar: response.data.avatar,
+        avatar_url: response.data.avatar_url,
         id: response.data.id,
         isAdmin: response.data.isAdmin,
       };

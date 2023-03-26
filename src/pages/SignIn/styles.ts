@@ -17,7 +17,7 @@ export const Content = styled.div`
   align-items: center;
 
   @media (max-width: 1100px) {
-    max-width: 100vw;
+    max-width: 100%;
   }
 `;
 
