@@ -27,7 +27,7 @@ export const ImageContainer = styled.div`
     }
   }
 
-  button {
+  label {
     border: none;
     background: #6c5dd2;
     color: #fff;
@@ -38,8 +38,14 @@ export const ImageContainer = styled.div`
     bottom: 0;
     right: 0;
 
+    cursor: pointer;
+
     &:hover {
       background: ${shade(0.2, "#6c5dd2")};
+    }
+
+    input {
+      display: none;
     }
   }
 `;

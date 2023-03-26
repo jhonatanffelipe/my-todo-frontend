@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { FiCamera, FiLock, FiMail, FiUnlock, FiUser } from "react-icons/fi";
 import * as Yup from "yup";
 
@@ -60,6 +60,40 @@ const Profile: React.FC = () => {
         });
       });
   }, [token, addToast, navigate, singOut, setData]);
+
+  const handleAvatarChenge = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const data = new FormData();
+
+        data.append("avatar", e.target.files[0]);
+
+        await api
+          .patch("/users/avatar", data)
+          .then(async () => {
+            await handleRequestShowProfile();
+
+            addToast({
+              type: "success",
+              title: "Avatar atualizado.",
+            });
+          })
+          .catch(error => {
+            if (error.response.status === 401) {
+              singOut();
+              navigate("/");
+            }
+
+            addToast({
+              type: "error",
+              title: "Erro ao atualizar perfil do usuário.",
+              description: error.response.data.message,
+            });
+          });
+      }
+    },
+    [navigate, addToast, singOut, handleRequestShowProfile],
+  );
 
   const handleSubmit = useCallback(async () => {
     setLoading(true);
@@ -154,9 +188,10 @@ const Profile: React.FC = () => {
         <div>
           <img src={avatar} alt={name} />
         </div>
-        <button>
+        <label>
           <FiCamera />
-        </button>
+          <input type="file" id="avatar" onChange={handleAvatarChenge} accept="image/*"></input>
+        </label>
       </ImageContainer>
 
       <Form>
