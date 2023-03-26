@@ -10,8 +10,8 @@ import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { IFormErrors } from "../../interfaces/IFormErrors";
 import { useToast } from "../../hooks/toast";
-import { resetPassword } from "../../services/password/resetPassword";
 import getValidationError from "../../utils/getValidationErros";
+import api from "../../services/api";
 
 const ResetPassword: React.FC = () => {
   const [token, setToken] = useState("");
@@ -47,29 +47,38 @@ const ResetPassword: React.FC = () => {
         abortEarly: false,
       });
 
-      await resetPassword({
-        token,
-        password,
-        confirmPassword,
-      }).then(() => {
-        addToast({
-          type: "success",
-          title: "Senha alterada com sucesso",
-          description: "Realize seu login",
-        });
+      await api
+        .put("/password/reset", {
+          token,
+          password,
+          confirmPassword,
+        })
+        .then(() => {
+          addToast({
+            type: "success",
+            title: "Senha alterada com sucesso",
+            description: "Realize seu login",
+          });
 
-        navigate("/");
-      });
-    } catch (err: Yup.ValidationError | any) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationError(err);
+          navigate("/");
+        })
+        .catch(error => {
+          throw Error(
+            error.response?.data?.message
+              ? error.response?.data?.message
+              : "Erro ao tentar alterar senha. Por favor tente mais tarde",
+          );
+        });
+    } catch (error: Yup.ValidationError | any) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = getValidationError(error);
         setFormErrors(errors);
         return;
       }
       addToast({
         type: "error",
         title: "Erro ao tentar alterar senha",
-        description: err.message,
+        description: error.message,
       });
     } finally {
       setLoading(false);

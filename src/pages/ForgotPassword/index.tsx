@@ -46,15 +46,16 @@ const ForgotPassword: React.FC = () => {
             description: "Verifique sua caixa de entrada",
           });
         })
-        .catch(() => {
-          addToast({
-            type: "error",
-            title: "Erro ao requisitar recuperação de senha.",
-          });
+        .catch(error => {
+          throw Error(
+            error.response?.data?.message
+              ? error.response?.data?.message
+              : "Erro ao tentar alterar senha. Por favor tente mais tarde",
+          );
         });
-    } catch (err: Yup.ValidationError | any) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationError(err);
+    } catch (error: Yup.ValidationError | any) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = getValidationError(error);
         setFormErros(errors);
         return;
       }
@@ -62,6 +63,7 @@ const ForgotPassword: React.FC = () => {
       addToast({
         type: "error",
         title: "Erro ao requisitar recuperação de senha.",
+        description: error.message,
       });
     } finally {
       setLoading(false);

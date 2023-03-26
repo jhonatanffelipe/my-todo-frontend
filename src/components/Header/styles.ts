@@ -19,7 +19,7 @@ export const Container = styled.header<IContentMobileProps>`
   justify-content: center;
   width: 100%;
 
-  @media (min-width: 850px) {
+  @media (min-width: 1000px) {
     height: 80px;
   }
 
@@ -45,7 +45,7 @@ export const ContentDesktop = styled.div`
     margin-right: 45px;
   }
 
-  @media (max-width: 850px) {
+  @media (max-width: 1000px) {
     display: none;
   }
 `;
@@ -64,7 +64,7 @@ export const ProfileDesktop = styled.div`
 
   div {
     margin-left: 15px;
-    font-size: 12px;
+    font-size: 14px;
 
     p {
       margin-bottom: 3px;
@@ -87,7 +87,7 @@ export const MenuDesktop = styled.div`
 export const MenuItemDesktop = styled(Link)<IMenuItensProps>`
   margin-left: 8px;
   margin-right: 8px;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   text-decoration: none;
 
@@ -133,7 +133,7 @@ export const ContentMobile = styled.div`
   display: flex;
   flex-direction: column;
 
-  @media (min-width: 850px) {
+  @media (min-width: 1000px) {
     display: none;
   }
 `;

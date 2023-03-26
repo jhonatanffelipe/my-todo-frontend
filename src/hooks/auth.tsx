@@ -8,7 +8,13 @@ import api from "../services/api";
 
 interface IAuthProvider extends HTMLAttributes<HTMLElement> {}
 
+interface IAuthData {
+  user: IAuthUser;
+  token: IAuthToken;
+}
+
 interface IAuthContext {
+  token: IAuthToken;
   user: {
     id: string;
     name: string;
@@ -17,6 +23,7 @@ interface IAuthContext {
   };
   signIn: (credentials: ISignInCredentials) => Promise<void>;
   singOut: () => void;
+  setData: (data: IAuthData) => void;
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -60,7 +67,15 @@ const AuthProvider: React.FC<IAuthProvider> = ({ children }) => {
     setAuthData({} as IAuthState);
   }, []);
 
-  return <AuthContext.Provider value={{ user: authData.user, signIn, singOut }}>{children}</AuthContext.Provider>;
+  const setData = useCallback(({ token, user }: IAuthData) => {
+    setAuthData({ token, user });
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user: authData.user, token: authData.token, signIn, singOut, setData }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 function useAuth(): IAuthContext {

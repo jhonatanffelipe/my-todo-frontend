@@ -25,7 +25,7 @@ const Profile: React.FC = () => {
   const [formErrors, setFormErrors] = useState<IFormErrors>({});
 
   const navigate = useNavigate();
-  const { singOut } = useAuth();
+  const { singOut, setData, token } = useAuth();
   const { addToast } = useToast();
 
   const handleRequestShowProfile = useCallback(async () => {
@@ -39,14 +39,13 @@ const Profile: React.FC = () => {
           avatarUrl: response.data.avatarUrl,
         };
 
-        localStorage.setItem("@MyTodo:user", JSON.stringify(user));
-
         setName(user.name);
         setEmail(user.email);
         setAvatar(user.avatarUrl);
-        setCurrentPassword("");
-        setPassword("");
-        setConfirmPassword("");
+
+        localStorage.setItem("@MyTodo:user", JSON.stringify(user));
+
+        setData({ token, user });
       })
       .catch(error => {
         if (error.response.status === 401) {
@@ -60,7 +59,7 @@ const Profile: React.FC = () => {
           description: error.response.data.message,
         });
       });
-  }, [addToast, navigate, singOut]);
+  }, [token, addToast, navigate, singOut, setData]);
 
   const handleSubmit = useCallback(async () => {
     setLoading(true);
@@ -96,7 +95,7 @@ const Profile: React.FC = () => {
         abortEarly: false,
       });
 
-      api
+      await api
         .put("/users", {
           name,
           email,
@@ -104,7 +103,18 @@ const Profile: React.FC = () => {
           password,
           confirmPassword,
         })
-        .then(response => response)
+        .then(async () => {
+          await handleRequestShowProfile();
+
+          addToast({
+            type: "success",
+            title: "Usuário atualizado com sucesso",
+          });
+
+          setCurrentPassword("");
+          setPassword("");
+          setConfirmPassword("");
+        })
         .catch(error => {
           if (error.response.status === 401) {
             singOut();
@@ -113,20 +123,13 @@ const Profile: React.FC = () => {
 
           addToast({
             type: "error",
-            title: "Erro ao listar dados do usuário.",
+            title: "Erro na tentar alterar usuário",
             description: error.response.data.message,
           });
         });
-
-      await handleRequestShowProfile();
-
-      addToast({
-        type: "success",
-        title: "Usuário atualizado com sucesso",
-      });
-    } catch (err: Yup.ValidationError | any) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationError(err);
+    } catch (error: Yup.ValidationError | any) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = getValidationError(error);
         setFormErrors(errors);
         return;
       }
@@ -134,10 +137,10 @@ const Profile: React.FC = () => {
       addToast({
         type: "error",
         title: "Erro na tentar alterar usuário",
-        description: err.message,
+        description: error.message,
       });
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   }, [name, email, currentPassword, password, confirmPassword, navigate, singOut, addToast, handleRequestShowProfile]);
 
@@ -181,16 +184,17 @@ const Profile: React.FC = () => {
 
         <div>
           <Input
+            value={currentPassword}
             name="currentPassword"
             icon={FiLock}
             type="password"
             placeholder="Senha atual"
             error={formErrors.currentPassword}
             onChange={e => setCurrentPassword(e.target.value)}
-            autoComplete="off"
           />
 
           <Input
+            value={password}
             name="password"
             icon={FiLock}
             type="password"
@@ -201,6 +205,7 @@ const Profile: React.FC = () => {
           />
 
           <Input
+            value={confirmPassword}
             name="confirmPassword"
             icon={FiUnlock}
             type="password"
