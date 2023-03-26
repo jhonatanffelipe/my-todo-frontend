@@ -37,7 +37,7 @@ const Header: React.FC = () => {
             <img src={logoImg} alt="My Todo" />
 
             <ProfileDesktop>
-              <img src={user.avatar_url} alt={user.name} />
+              <img src={user.avatarUrl} alt={user.name} />
 
               <div>
                 <p>Bem vindo,</p>

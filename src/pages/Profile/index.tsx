@@ -8,8 +8,10 @@ import { IFormErrors } from "../../interfaces/IFormErrors";
 import { Button } from "../../components/Button";
 import getValidationError from "../../utils/getValidationErros";
 import { useToast } from "../../hooks/toast";
-import { showProfile } from "../../services/user/showProfile";
-import { updateUser } from "../../services/user/updateUser";
+import { useAuth } from "../../hooks/auth";
+import { useNavigate } from "react-router-dom";
+import { IAuthUser } from "../../interfaces/IAuthUser";
+import api from "../../services/api";
 
 const Profile: React.FC = () => {
   const [name, setName] = useState("");
@@ -22,18 +24,43 @@ const Profile: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [formErrors, setFormErrors] = useState<IFormErrors>({});
 
+  const navigate = useNavigate();
+  const { singOut } = useAuth();
   const { addToast } = useToast();
 
   const handleRequestShowProfile = useCallback(async () => {
-    await showProfile().then(reponse => {
-      setName(reponse.name);
-      setEmail(reponse.email);
-      setAvatar(reponse.avatar_url);
+    await api
+      .get("/users/profile")
+      .then(response => {
+        const user: IAuthUser = {
+          id: response.data.id,
+          name: response.data.name,
+          email: response.data.email,
+          avatarUrl: response.data.avatarUrl,
+        };
 
-      // localStorage.setItem("@MyTodo:user", JSON.stringify(reponse));
-      // setData({ token, user: profileUser });
-    });
-  }, []);
+        localStorage.setItem("@MyTodo:user", JSON.stringify(user));
+
+        setName(user.name);
+        setEmail(user.email);
+        setAvatar(user.avatarUrl);
+        setCurrentPassword("");
+        setPassword("");
+        setConfirmPassword("");
+      })
+      .catch(error => {
+        if (error.response.status === 401) {
+          singOut();
+          navigate("/");
+        }
+
+        addToast({
+          type: "error",
+          title: "Erro ao listar dados do usuário.",
+          description: error.response.data.message,
+        });
+      });
+  }, [addToast, navigate, singOut]);
 
   const handleSubmit = useCallback(async () => {
     setLoading(true);
@@ -69,7 +96,27 @@ const Profile: React.FC = () => {
         abortEarly: false,
       });
 
-      await updateUser(data);
+      api
+        .put("/users", {
+          name,
+          email,
+          currentPassword,
+          password,
+          confirmPassword,
+        })
+        .then(response => response)
+        .catch(error => {
+          if (error.response.status === 401) {
+            singOut();
+            navigate("/");
+          }
+
+          addToast({
+            type: "error",
+            title: "Erro ao listar dados do usuário.",
+            description: error.response.data.message,
+          });
+        });
 
       await handleRequestShowProfile();
 
@@ -92,7 +139,7 @@ const Profile: React.FC = () => {
     } finally {
       setLoading(true);
     }
-  }, [name, email, currentPassword, password, confirmPassword, addToast, handleRequestShowProfile]);
+  }, [name, email, currentPassword, password, confirmPassword, navigate, singOut, addToast, handleRequestShowProfile]);
 
   useEffect(() => {
     void handleRequestShowProfile();

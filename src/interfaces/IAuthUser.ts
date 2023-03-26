@@ -1,6 +1,6 @@
 export interface IAuthUser {
   id: string;
   name: string;
-  avatar_url: string;
+  avatarUrl: string;
   email: string;
 }

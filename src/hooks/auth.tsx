@@ -12,7 +12,7 @@ interface IAuthContext {
   user: {
     id: string;
     name: string;
-    avatar_url: string;
+    avatarUrl: string;
     email: string;
   };
   signIn: (credentials: ISignInCredentials) => Promise<void>;
