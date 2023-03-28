@@ -26,7 +26,7 @@ const Task: React.FC = () => {
   const [date, setDate] = useState("");
   const [hour, setHour] = useState("");
   const [conclued, setConclued] = useState(false);
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState<string | null>(null);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -87,7 +87,7 @@ const Task: React.FC = () => {
               type="button"
               key={category.id}
               onClick={() => setCategoryId(category.id)}
-              selected={category.id === categoryId}
+              selected={category.id === categoryId || !categoryId}
             >
               <img src={category.imageUrl} alt={category.name} />
             </Category>
