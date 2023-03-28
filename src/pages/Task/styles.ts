@@ -56,7 +56,7 @@ export const Category = styled.button<ICategoryProps>`
       opacity: 1;
 
       &:hover {
-        background: #6c5dd2;
+        background: ${shade(0.2, "#6c5dd2")};
       }
     `}
 `;
