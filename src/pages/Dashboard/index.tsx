@@ -1,11 +1,18 @@
 import React from "react";
 
-import { Container } from "./styles";
+import { Container, Content, FilterSession, FilterCard } from "./styles";
 
 const Dashboard: React.FC = () => {
   return (
     <Container>
-      <h1>Dashboard</h1>
+      <Content>
+        <FilterSession>
+          <FilterCard></FilterCard>
+          <FilterCard></FilterCard>
+          <FilterCard></FilterCard>
+          <FilterCard></FilterCard>
+        </FilterSession>
+      </Content>
     </Container>
   );
 };
