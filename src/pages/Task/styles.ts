@@ -5,12 +5,60 @@ interface ICheckboxProps {
   selected: boolean;
 }
 
+interface ICategoryProps {
+  selected: boolean;
+}
+
 export const Container = styled.div`
-  height: 100vh;
+  height: 100%;
 
   display: flex;
   justify-content: center;
   background: #282b30;
+  padding: 16px;
+`;
+
+export const CategorySession = styled.div`
+  margin-top: 24px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
+export const Category = styled.button<ICategoryProps>`
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: ${shade(0.4, "#6c5dd2")};
+  margin: 8px;
+  opacity: 0.5;
+
+  border-radius: 50%;
+
+  &:hover {
+    background: ${shade(0.6, "#6c5dd2")};
+  }
+
+  img {
+    width: 26px;
+  }
+
+  ${props =>
+    props.selected &&
+    css`
+      background: #6c5dd2;
+      opacity: 1;
+
+      &:hover {
+        background: #6c5dd2;
+      }
+    `}
 `;
 
 export const Content = styled.div`
@@ -18,13 +66,15 @@ export const Content = styled.div`
     width: 50%;
   }
 
+  height: 100%;
+
   form {
     display: flex;
     flex-direction: column;
     align-items: center;
     min-width: 300px;
     width: 100%;
-    margin: 36px;
+    margin-top: 36px;
 
     .conclued-delete {
       display: flex;

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FiCheck } from "react-icons/fi";
 
 import { Button } from "../../components/Button";
@@ -6,7 +6,19 @@ import { Input } from "../../components/Input";
 import { TextArea } from "../../components/TextArea";
 import { IFormErrors } from "../../interfaces/IFormErrors";
 
-import { Container, Content, Checkbox } from "./styles";
+import { Container, Content, Checkbox, CategorySession, Category } from "./styles";
+
+import api from "../../services/api";
+import { useAuth } from "../../hooks/auth";
+
+import { useNavigate } from "react-router-dom";
+import { useToast } from "../../hooks/toast";
+
+interface ICategory {
+  id: string;
+  name: string;
+  imageUrl: string;
+}
 
 const Task: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -14,9 +26,34 @@ const Task: React.FC = () => {
   const [date, setDate] = useState("");
   const [hour, setHour] = useState("");
   const [conclued, setConclued] = useState(false);
+  const [categoryId, setCategoryId] = useState("");
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [loading, setLoading] = useState(false);
 
   const [formErrors, setFormErros] = useState<IFormErrors>({});
+  const { singOut } = useAuth();
+  const navigate = useNavigate();
+  const { addToast } = useToast();
+
+  const handleRequestCategories = useCallback(async () => {
+    await api
+      .get("/categories")
+      .then(response => {
+        setCategories(response.data);
+      })
+      .catch(error => {
+        if (error.response.status === 401) {
+          singOut();
+          navigate("/");
+        }
+
+        addToast({
+          type: "error",
+          title: "Erro ao atualizar perfil do usuário.",
+          description: error.response.data.message,
+        });
+      });
+  }, [addToast, navigate, singOut]);
 
   const handleSubmit = useCallback(() => {
     setLoading(true);
@@ -24,19 +61,38 @@ const Task: React.FC = () => {
 
     try {
       console.log({
+        categoryId,
         title,
         description,
+        date,
+        hour,
       });
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
-  }, [title, description]);
+  }, [categoryId, title, description, date, hour]);
+
+  useEffect(() => {
+    void handleRequestCategories();
+  }, [handleRequestCategories]);
 
   return (
     <Container>
       <Content>
+        <CategorySession>
+          {categories.map(category => (
+            <Category
+              type="button"
+              key={category.id}
+              onClick={() => setCategoryId(category.id)}
+              selected={category.id === categoryId}
+            >
+              <img src={category.imageUrl} alt={category.name} />
+            </Category>
+          ))}
+        </CategorySession>
         <form>
           <Input placeholder="Título" value={title} onChange={e => setTitle(e.target.value)} error={formErrors.title} />
 
