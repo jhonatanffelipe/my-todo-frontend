@@ -18,4 +18,5 @@ export const FilterSession = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 40px;
 `;
