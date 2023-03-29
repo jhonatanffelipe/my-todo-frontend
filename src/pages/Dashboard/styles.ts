@@ -19,12 +19,3 @@ export const FilterSession = styled.div`
   flex-wrap: wrap;
   justify-content: center;
 `;
-
-export const FilterCard = styled.div`
-  background: #1e2128;
-
-  height: 70px;
-  min-width: 250px;
-  margin: 4px 8px;
-  border-radius: 8px;
-`;
