@@ -27,9 +27,9 @@ interface ICategory {
 const Task: React.FC = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState(moment().format("yyyy-MM-DD"));
+  const [date, setDate] = useState("");
   const [hour, setHour] = useState("");
-  const [conclued, setConclued] = useState(false);
+  const [done, setDone] = useState(false);
   const [categoryId, setCategoryId] = useState<string | null>(null);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [loading, setLoading] = useState(false);
@@ -71,8 +71,6 @@ const Task: React.FC = () => {
         hour,
       };
 
-      console.log(categoryId);
-
       if (!categoryId) {
         throw new AppError("Categoria obrigatória");
       }
@@ -81,7 +79,7 @@ const Task: React.FC = () => {
         categoryId: Yup.string().required("Categoria obrigatória"),
         title: Yup.string().required("Título obrigatório"),
         description: Yup.string().required("Descrição obrigatório"),
-        date: Yup.date().required("Data obrigatória"),
+        date: Yup.string().required("Data obrigatória"),
         hour: Yup.string().required("Hora obrigatória"),
       });
 
@@ -94,12 +92,15 @@ const Task: React.FC = () => {
         title,
         description,
         when: moment(`${date} ${hour}`).format("yyyy-MM-DD HH:mm:ss.000"),
+        done,
       });
 
       addToast({
         type: "success",
         title: "Atividade criada com sucsso",
       });
+
+      navigate("/");
     } catch (error: Yup.ValidationError | any) {
       if (error instanceof Yup.ValidationError) {
         const errors = getValidationError(error);
@@ -115,7 +116,7 @@ const Task: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [categoryId, title, description, date, hour, addToast]);
+  }, [categoryId, title, description, date, hour, done, addToast, navigate]);
 
   useEffect(() => {
     void handleRequestCategories();
@@ -156,9 +157,9 @@ const Task: React.FC = () => {
 
           <Input type="time" value={hour} onChange={e => setHour(e.target.value)} error={formErrors.hour} />
 
-          <div className="conclued-delete">
-            <Checkbox selected={conclued} onClick={() => setConclued(!conclued)}>
-              <div>{conclued && <FiCheck />}</div>
+          <div className="done-delete">
+            <Checkbox selected={done} onClick={() => setDone(!done)}>
+              <div>{done && <FiCheck />}</div>
               <span>
                 <strong>Concluído</strong>
               </span>

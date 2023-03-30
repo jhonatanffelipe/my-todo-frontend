@@ -62,7 +62,7 @@ export const Category = styled.button<ICategoryProps>`
 `;
 
 export const Content = styled.div`
-  @media (min-width: 700px) {
+  @media (min-width: 1400px) {
     width: 50%;
   }
 
@@ -76,7 +76,7 @@ export const Content = styled.div`
     width: 100%;
     margin-top: 36px;
 
-    .conclued-delete {
+    .done-delete {
       display: flex;
       align-items: center;
       justify-content: space-between;

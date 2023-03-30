@@ -4,16 +4,16 @@ import { Container, Content, FilterSession } from "./styles";
 import { FilterCard } from "../../components/FilterCard";
 
 const Dashboard: React.FC = () => {
-  const [selectedFilter, setSelectedFilter] = useState("day");
+  const [selectedFilter, setSelectedFilter] = useState("D");
 
   return (
     <Container>
       <Content>
         <FilterSession>
-          <FilterCard title="Dia" onClick={e => setSelectedFilter("day")} selected={selectedFilter === "day"} />
-          <FilterCard title="Semana" onClick={e => setSelectedFilter("week")} selected={selectedFilter === "week"} />
-          <FilterCard title="Mês" onClick={e => setSelectedFilter("month")} selected={selectedFilter === "month"} />
-          <FilterCard title="Ano" onClick={e => setSelectedFilter("year")} selected={selectedFilter === "year"} />
+          <FilterCard title="Dia" onClick={e => setSelectedFilter("D")} selected={selectedFilter === "D"} />
+          <FilterCard title="Semana" onClick={e => setSelectedFilter("W")} selected={selectedFilter === "W"} />
+          <FilterCard title="Mês" onClick={e => setSelectedFilter("M")} selected={selectedFilter === "M"} />
+          <FilterCard title="Ano" onClick={e => setSelectedFilter("Y")} selected={selectedFilter === "Y"} />
         </FilterSession>
       </Content>
     </Container>
