@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { FiCheck } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
 
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
@@ -11,8 +13,10 @@ import { Container, Content, Checkbox, CategorySession, Category } from "./style
 import api from "../../services/api";
 import { useAuth } from "../../hooks/auth";
 
-import { useNavigate } from "react-router-dom";
 import { useToast } from "../../hooks/toast";
+import getValidationError from "../../utils/getValidationErros";
+import moment from "moment";
+import { AppError } from "../../utils/errors/AppError";
 
 interface ICategory {
   id: string;
@@ -23,14 +27,14 @@ interface ICategory {
 const Task: React.FC = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(moment().format("yyyy-MM-DD"));
   const [hour, setHour] = useState("");
   const [conclued, setConclued] = useState(false);
   const [categoryId, setCategoryId] = useState<string | null>(null);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [loading, setLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState<IFormErrors>({});
 
-  const [formErrors, setFormErros] = useState<IFormErrors>({});
   const { singOut } = useAuth();
   const navigate = useNavigate();
   const { addToast } = useToast();
@@ -55,24 +59,63 @@ const Task: React.FC = () => {
       });
   }, [addToast, navigate, singOut]);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     setLoading(true);
-    setFormErros({});
-
+    setFormErrors({});
     try {
-      console.log({
+      const data = {
         categoryId,
         title,
         description,
         date,
         hour,
+      };
+
+      console.log(categoryId);
+
+      if (!categoryId) {
+        throw new AppError("Categoria obrigatória");
+      }
+
+      const schema = Yup.object().shape({
+        categoryId: Yup.string().required("Categoria obrigatória"),
+        title: Yup.string().required("Título obrigatório"),
+        description: Yup.string().required("Descrição obrigatório"),
+        date: Yup.date().required("Data obrigatória"),
+        hour: Yup.string().required("Hora obrigatória"),
       });
-    } catch (error) {
-      console.log(error);
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      await api.post("/tasks", {
+        categoryId,
+        title,
+        description,
+        when: moment(`${date} ${hour}`).format("yyyy-MM-DD HH:mm:ss.000"),
+      });
+
+      addToast({
+        type: "success",
+        title: "Atividade criada com sucsso",
+      });
+    } catch (error: Yup.ValidationError | any) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = getValidationError(error);
+        setFormErrors(errors);
+        return;
+      }
+
+      addToast({
+        type: "error",
+        title: "Erro na tentar criar/alterar atividade",
+        description: error.message,
+      });
     } finally {
       setLoading(false);
     }
-  }, [categoryId, title, description, date, hour]);
+  }, [categoryId, title, description, date, hour, addToast]);
 
   useEffect(() => {
     void handleRequestCategories();
@@ -103,7 +146,13 @@ const Task: React.FC = () => {
             error={formErrors.description}
           ></TextArea>
 
-          <Input type="date" value={date} onChange={e => setDate(e.target.value)} error={formErrors.date} />
+          <Input
+            type="date"
+            pattern="DD/MM/yyyy"
+            value={date}
+            onChange={e => setDate(e.target.value)}
+            error={formErrors.date}
+          />
 
           <Input type="time" value={hour} onChange={e => setHour(e.target.value)} error={formErrors.hour} />
 

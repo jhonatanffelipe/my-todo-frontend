@@ -72,7 +72,7 @@ const SignUp: React.FC = () => {
         description: err.message,
       });
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   }, [addToast, name, email, password, confirmPassword, navigate]);
 
