@@ -1,5 +1,5 @@
-<div align="center"
-  <img src="https://raw.githubusercontent.com/jhonatanffelipe/my-todo-frontend/d5b7100123d25326fa4c9165c64d6e4fe1c1d4c7/src/assets/logo-purple.svg" />
+<div align="center">
+  <img src="https://raw.githubusercontent.com/jhonatanffelipe/my-todo-frontend/main/src/assets/logo-purple.png" />
   <br/>
   <br/>
 </div>
