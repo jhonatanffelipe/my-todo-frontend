@@ -1,46 +1,67 @@
-# Getting Started with Create React App
+<div align="center"
+  <img src="https://raw.githubusercontent.com/jhonatanffelipe/my-todo-frontend/d5b7100123d25326fa4c9165c64d6e4fe1c1d4c7/src/assets/logo-purple.svg" />
+  <br/>
+  <br/>
+</div>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+   <img alt="Tecnologias" src="https://img.shields.io/github/languages/count/jhonatanffelipe/my-todo-frontend?color=6C5DD2">
+   <img alt="Tamanho do repositório" src="https://img.shields.io/github/repo-size/jhonatanffelipe/my-todo-frontend?color=6C5DD2">
+   <img alt="Ultimo commit no Github" src="https://img.shields.io/github/last-commit/jhonatanffelipe/my-todo-frontend?color=6C5DD2">
+   <img alt="Criado por" src="https://img.shields.io/badge/made%20by-jhonatanffelipe-%20?color=6C5DD2">
+   <img alt="Linguagens mais usadas no programa" src="https://img.shields.io/github/languages/top/jhonatanffelipe/my-todo-frontend?color=6C5DD2">
+</p>
 
-## Available Scripts
+# :rocket: Sobre o projeto
 
-In the project directory, you can run:
+O My ToDo é um aplicativo inovador de gerenciamento de tarefas, criado para facilitar a vida das pessoas que precisam lidar com diversas atividades ao longo do dia. Desenvolvido com tecnologia de ponta, o My ToDo é baseado em nuvem, o que significa que os usuários podem acessá-lo a partir de qualquer dispositivo conectado à internet, como smartphones, tablets e computadores.
 
-### `yarn start`
+Uma das grandes vantagens do My ToDo é sua interface intuitiva e amigável, que torna a utilização do aplicativo simples e agradável. Além disso, o aplicativo é altamente personalizável, permitindo que os usuários configurem suas preferências e ajustem a interface de acordo com suas necessidades.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Com o My ToDo, gerenciar tarefas nunca foi tão fácil. Seja para uso pessoal ou profissional, o aplicativo oferece uma solução eficiente e prática para quem busca otimizar seu tempo e aumentar sua produtividade.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# Tecnologias utilizadas
 
-### `yarn test`
+- [React](https://pt-br.reactjs.org/)
+- [Typecript](https://www.typescriptlang.org/)
+- [styled-components](https://styled-components.com/)
+- [Axios](https://axios-http.com/ptbr/docs/intro)
+- [Yup](https://www.npmjs.com/package/yup)
+- [ESLint](https://eslint.org/)
+- [Prettier](https://prettier.io/)
+- [express-async-errors](https://www.npmjs.com/package/express-async-errors)
+- [polished](https://www.npmjs.com/package/polished)
+- [react-icons](https://react-icons.github.io/react-icons/icons?name=fi)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Executando a aplicação
 
-### `yarn build`
+Obs: Antes de qualquer procedimento é importante que a aplicação backend eteja executando:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- [my-todo-backend](https://github.com/jhonatanffelipe/my-todo-backend.git)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Para executar esta aplicação, siga os seguintes passos:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Clone o repositório:
 
-### `yarn eject`
+  ```bash
+  git clone https://github.com/jhonatanffelipe/my-todo-frontend.git
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Com o repositório clonado, acesse o diretório raiz do projeto e digite code . para abrir o projeto no VS Code.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Em seguida instale as dependências do projeto:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+  ```bash
+  # Baixar dependências
+  yarn
+  ```
 
-## Learn More
+- Ao finalizar, executer a aplicação com o comando:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  ```bash
+  # Executar a aplicação
+  yarn start
+  ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Com estes passos concluídos, a aplicação estará em execução e pronta para ser utilizada.
