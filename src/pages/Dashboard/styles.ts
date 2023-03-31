@@ -1,5 +1,10 @@
 import { shade } from "polished";
-import styled from "styled-components";
+import { Link } from "react-router-dom";
+import styled, { css } from "styled-components";
+
+interface ITaskProps {
+  done?: string | null;
+}
 
 export const Container = styled.div`
   height: 100%;
@@ -63,13 +68,15 @@ export const TaskSession = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 40px;
+  margin: 40px 0;
 `;
 
-export const Task = styled.div`
+export const Task = styled(Link)<ITaskProps>`
   width: 250px;
   height: 150px;
   background: #6c5dd2;
+  text-decoration: none;
+  color: #fff;
 
   &:hover {
     background: ${shade(0.2, "#6c5dd2")};
@@ -79,6 +86,15 @@ export const Task = styled.div`
 
   border-radius: 8px;
   margin: 4px 8px;
+
+  ${props =>
+    props.done
+      ? css`
+          opacity: 0.3;
+        `
+      : css`
+          opacity: 1;
+        `}
 `;
 
 export const TaskTop = styled.div`
@@ -90,7 +106,7 @@ export const TaskTop = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
-  padding-top: 16px;
+  padding-top: 12px;
 
   div {
     display: flex;
@@ -109,7 +125,8 @@ export const TaskTop = styled.div`
   }
 
   strong {
-    font-size: 18px;
+    margin-top: 10px;
+    font-size: 16px;
   }
 `;
 

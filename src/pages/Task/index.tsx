@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { FiCheck } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import * as Yup from "yup";
 
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { TextArea } from "../../components/TextArea";
 import { IFormErrors } from "../../interfaces/IFormErrors";
+import moment from "moment";
 
 import { Container, Content, Checkbox, CategorySession, Category } from "./styles";
 
@@ -15,7 +16,6 @@ import { useAuth } from "../../hooks/auth";
 
 import { useToast } from "../../hooks/toast";
 import getValidationError from "../../utils/getValidationErros";
-import moment from "moment";
 import { AppError } from "../../utils/errors/AppError";
 
 interface ICategory {
@@ -25,6 +25,7 @@ interface ICategory {
 }
 
 const Task: React.FC = () => {
+  const [id, setId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -36,8 +37,9 @@ const Task: React.FC = () => {
   const [formErrors, setFormErrors] = useState<IFormErrors>({});
 
   const { singOut } = useAuth();
-  const navigate = useNavigate();
   const { addToast } = useToast();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleRequestCategories = useCallback(async () => {
     await api
@@ -58,6 +60,37 @@ const Task: React.FC = () => {
         });
       });
   }, [addToast, navigate, singOut]);
+
+  const handleRequesTask = useCallback(async () => {
+    const taskId = location.pathname.replace("/task", "").replace("/", "");
+
+    setId(taskId);
+
+    if (taskId) {
+      api
+        .get(`/tasks/${taskId}`)
+        .then(response => {
+          setCategoryId(response.data.categoryId);
+          setTitle(response.data.title);
+          setDescription(response.data.description);
+          setDate(moment(response.data.when).format("YYYY-MM-DD"));
+          setHour(moment(response.data.when).format("HH:mm:00"));
+          setDone(response.data.done);
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            singOut();
+            navigate("/");
+          }
+
+          addToast({
+            type: "error",
+            title: "Erro ao encontrar tarefa.",
+            description: error?.message ? error?.message : error.response.data.message,
+          });
+        });
+    }
+  }, [addToast, navigate, singOut, location.pathname]);
 
   const handleSubmit = useCallback(async () => {
     setLoading(true);
@@ -87,18 +120,33 @@ const Task: React.FC = () => {
         abortEarly: false,
       });
 
-      await api.post("/tasks", {
-        categoryId,
-        title,
-        description,
-        when: moment(`${date} ${hour}`).format("yyyy-MM-DD HH:mm:ss.000"),
-        done,
-      });
+      if (id) {
+        await api.put(`/tasks/${id}`, {
+          categoryId,
+          title,
+          description,
+          when: moment(`${date} ${hour}`).format("yyyy-MM-DD HH:mm:ss.000"),
+          done,
+        });
 
-      addToast({
-        type: "success",
-        title: "Atividade criada com sucsso",
-      });
+        addToast({
+          type: "success",
+          title: "Atividade atualizada com sucsso",
+        });
+      } else {
+        await api.post("/tasks", {
+          categoryId,
+          title,
+          description,
+          when: moment(`${date} ${hour}`).format("yyyy-MM-DD HH:mm:ss.000"),
+          done,
+        });
+
+        addToast({
+          type: "success",
+          title: "Atividade criada com sucsso",
+        });
+      }
 
       navigate("/");
     } catch (error: Yup.ValidationError | any) {
@@ -116,11 +164,17 @@ const Task: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [categoryId, title, description, date, hour, done, addToast, navigate]);
+  }, [categoryId, title, description, date, hour, done, addToast, navigate, id]);
 
   useEffect(() => {
     void handleRequestCategories();
-  }, [handleRequestCategories]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    void handleRequesTask();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container>

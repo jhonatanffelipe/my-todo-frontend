@@ -23,6 +23,7 @@ const AppRoutes: React.FC = () => {
 
       <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
       <Route path="/task" element={user ? <Task /> : <Navigate to="/" />} />
+      <Route path="/task/:id" element={user ? <Task /> : <Navigate to="/" />} />
       <Route path="/profile" element={user ? <Profile /> : <Navigate to="/" />} />
 
       <Route path="*" element={<Navigate to={`${user ? "/dashboard" : "/"}`} />} />

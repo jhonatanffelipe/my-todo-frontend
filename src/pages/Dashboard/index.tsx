@@ -63,7 +63,7 @@ const Dashboard: React.FC = () => {
 
         <TaskSession>
           {tasks.map(task => (
-            <Task key={task.id}>
+            <Task key={task.id} to={`/task/${task.id}`} done={task.done ? "true" : null}>
               <TaskTop>
                 <div>
                   <img src={task.category.imageUrl} alt={task.title} />
