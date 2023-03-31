@@ -12,6 +12,7 @@ import { useToast } from "../../hooks/toast";
 const Dashboard: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState("D");
   const [tasks, setTasks] = useState<ITask[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const { singOut } = useAuth();
   const { addToast } = useToast();
@@ -22,6 +23,7 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const handleRequestTasks = useCallback(async () => {
+    setLoading(true);
     await api
       .get(`/tasks?date=${now}&type=${selectedFilter}`)
       .then(response => {
@@ -38,6 +40,9 @@ const Dashboard: React.FC = () => {
           title: "Erro ao atualizar perfil do usuário.",
           description: error.response.data.message,
         });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [now, selectedFilter, addToast, navigate, singOut]);
 
@@ -61,24 +66,30 @@ const Dashboard: React.FC = () => {
           </div>
         </Separator>
 
-        <TaskSession>
-          {tasks.map(task => (
-            <Task key={task.id} to={`/task/${task.id}`} done={task.done ? "true" : null}>
-              <TaskTop>
-                <div>
-                  <img src={task.category.imageUrl} alt={task.title} />
-                </div>
-                <strong>{task.title}</strong>
-              </TaskTop>
-              <TaskBotton>
-                <span>{moment(task.when).format("DD/MM/yyyy")}</span>
-                <span>
-                  <strong>{moment(task.when).format("HH:mm")}</strong>
-                </span>
-              </TaskBotton>
-            </Task>
-          ))}
-        </TaskSession>
+        {!loading ? (
+          <TaskSession>
+            {tasks.map(task => (
+              <Task key={task.id} to={`/task/${task.id}`} done={task.done ? "true" : null}>
+                <TaskTop>
+                  <div>
+                    <img src={task.category.imageUrl} alt={task.title} />
+                  </div>
+                  <strong>{task.title}</strong>
+                </TaskTop>
+                <TaskBotton>
+                  <span>{moment(task.when).format("DD/MM/yyyy")}</span>
+                  <span>
+                    <strong>{moment(task.when).format("HH:mm")}</strong>
+                  </span>
+                </TaskBotton>
+              </Task>
+            ))}
+          </TaskSession>
+        ) : (
+          <TaskSession>
+            <h1>Carregando...</h1>
+          </TaskSession>
+        )}
       </Content>
     </Container>
   );

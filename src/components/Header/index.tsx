@@ -46,13 +46,13 @@ const Header: React.FC = () => {
             </ProfileDesktop>
 
             <MenuDesktop>
-              <MenuItemDesktop to={"/"} selected={pathName === "/dashboard"}>
+              <MenuItemDesktop to={"/"} selected={pathName.includes("/dashboard")}>
                 Inicio
               </MenuItemDesktop>
-              <MenuItemDesktop to={"/task"} selected={pathName === "/task"}>
+              <MenuItemDesktop to={"/task"} selected={pathName.includes("/task")}>
                 Nova Tarefa
               </MenuItemDesktop>
-              <MenuItemDesktop to={"/profile"} selected={pathName === "/profile"}>
+              <MenuItemDesktop to={"/profile"} selected={pathName.includes("/profile")}>
                 Meu Perfil
               </MenuItemDesktop>
             </MenuDesktop>

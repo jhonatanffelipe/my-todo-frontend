@@ -67,6 +67,7 @@ const Task: React.FC = () => {
     setId(taskId);
 
     if (taskId) {
+      setLoading(true);
       api
         .get(`/tasks/${taskId}`)
         .then(response => {
@@ -88,9 +89,40 @@ const Task: React.FC = () => {
             title: "Erro ao encontrar tarefa.",
             description: error?.message ? error?.message : error.response.data.message,
           });
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   }, [addToast, navigate, singOut, location.pathname]);
+
+  const handleDeleteTask = useCallback(async () => {
+    setLoading(true);
+    await api
+      .delete(`/tasks/${id}`)
+      .then(() => {
+        addToast({
+          type: "success",
+          title: "Tarefa excluída com sucesso",
+        });
+        navigate("/");
+      })
+      .catch(error => {
+        if (error.response.status === 401) {
+          singOut();
+          navigate("/");
+        }
+
+        addToast({
+          type: "error",
+          title: "Erro ao exluir tarefa.",
+          description: error?.message ? error?.message : error.response.data.message,
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [addToast, navigate, singOut, id]);
 
   const handleSubmit = useCallback(async () => {
     setLoading(true);
@@ -219,7 +251,7 @@ const Task: React.FC = () => {
               </span>
             </Checkbox>
 
-            <button type="button">
+            <button type="button" onClick={handleDeleteTask}>
               <strong>Excluir</strong>
             </button>
           </div>

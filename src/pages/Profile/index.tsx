@@ -68,6 +68,7 @@ const Profile: React.FC = () => {
 
         data.append("avatar", e.target.files[0]);
 
+        setLoading(true);
         await api
           .patch("/users/avatar", data)
           .then(async () => {
@@ -89,6 +90,9 @@ const Profile: React.FC = () => {
               title: "Erro ao atualizar perfil do usuário.",
               description: error.response.data.message,
             });
+          })
+          .finally(() => {
+            setLoading(false);
           });
       }
     },
