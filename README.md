@@ -20,6 +20,15 @@ Uma das grandes vantagens do My ToDo é sua interface intuitiva e amigável, que
 
 Com o My ToDo, gerenciar tarefas nunca foi tão fácil. Seja para uso pessoal ou profissional, o aplicativo oferece uma solução eficiente e prática para quem busca otimizar seu tempo e aumentar sua produtividade.
 
+
+
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/jhonatanffelipe/my-todo-frontend/main/src/assets/mytodo.gif" />
+  <br/>
+  <br/>
+</div>
+
 # Tecnologias utilizadas
 
 - [React](https://pt-br.reactjs.org/)
